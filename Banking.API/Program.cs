@@ -1,3 +1,6 @@
+using Banking.API.Extensions;
+using Banking.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 var app = builder.Build();
+
+await app.UseMigrationAsync().ConfigureAwait(false);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -16,4 +23,4 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.Run();
+await app.RunAsync().ConfigureAwait(false);
