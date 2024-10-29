@@ -1,5 +1,7 @@
 ﻿using Banking.Domain.Accounts;
 using Banking.Domain.Data;
+using Banking.Domain.Transactions;
+using Banking.Domain.Transfers;
 using Banking.Infrastructure.Data;
 using Banking.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,8 @@ namespace Banking.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<ITransferRepository, TransferRepository>();
 
             return services;
         }

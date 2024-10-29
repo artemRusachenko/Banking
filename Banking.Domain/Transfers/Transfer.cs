@@ -16,13 +16,13 @@ namespace Banking.Domain.Transfers
         [JsonIgnore]
         public virtual Account? ToAccount { get; set; }
 
-        public Transfer(Guid fromAccountId, Guid toAccountId, decimal amount, DateTime transferDate)
+        public Transfer(Guid fromAccountId, Guid toAccountId, decimal amount)
         {
             Id = Guid.NewGuid();
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;
             Amount = amount;
-            TransferDate = transferDate;
+            TransferDate = DateTime.UtcNow;
         }
     }
 }
