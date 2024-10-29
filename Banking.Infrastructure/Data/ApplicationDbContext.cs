@@ -3,6 +3,7 @@ using Banking.Domain.Data;
 using Banking.Domain.Transactions;
 using Banking.Domain.Transfers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Banking.Infrastructure.Data
 {
@@ -11,8 +12,10 @@ namespace Banking.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Transaction> Transaction { get; set; }
-        public DbSet<Transfer> Transfer { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }
+
+        public new DatabaseFacade Database => base.Database;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
