@@ -1,4 +1,7 @@
-﻿namespace Banking.Domain
+﻿using Banking.Domain.Accounts;
+using System.Text.Json.Serialization;
+
+namespace Banking.Domain.Transfers
 {
     public class Transfer
     {
@@ -8,7 +11,9 @@
         public decimal Amount { get; set; }
         public DateTime TransferDate { get; set; }
 
+        [JsonIgnore]
         public virtual Account? FromAccount { get; set; }
+        [JsonIgnore]
         public virtual Account? ToAccount { get; set; }
 
         public Transfer(Guid fromAccountId, Guid toAccountId, decimal amount, DateTime transferDate)
