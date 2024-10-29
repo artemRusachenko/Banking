@@ -1,4 +1,4 @@
-﻿using Banking.Domain;
+﻿using Banking.Domain.Accounts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

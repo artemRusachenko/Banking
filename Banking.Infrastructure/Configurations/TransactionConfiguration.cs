@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Banking.Domain;
+using Banking.Domain.Transactions;
 
 namespace Banking.Infrastructure.Configurations
 {
