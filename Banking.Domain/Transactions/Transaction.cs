@@ -1,4 +1,7 @@
-﻿namespace Banking.Domain
+﻿using Banking.Domain.Accounts;
+using System.Text.Json.Serialization;
+
+namespace Banking.Domain.Transactions
 {
     public enum TransactionType
     {
@@ -16,6 +19,7 @@
         public DateTime TransactionDate { get; set; }
         public string Description { get; set; }
 
+        [JsonIgnore]
         public virtual Account? Account { get; set; }
 
         public Transaction(Guid accountId, TransactionType transactionType, decimal amount, string? description)
