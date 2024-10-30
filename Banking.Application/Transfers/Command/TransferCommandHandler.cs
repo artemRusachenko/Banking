@@ -16,7 +16,7 @@ namespace Banking.Application.Transfers.Command
         ITransferRepository transferRepository, ITransactionRepository transactionRepository, IUnitOfWork unitOfWork)
         : IRequestHandler<TransferCommand, Result<TransferResult>>
     {
-        public async Task<Result<TransferResult>> Handle(TransferCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TransferResult>> Handle(TransferCommand? request, CancellationToken cancellationToken)
         {
             if (request == null)
                 return ResultBuilder.Failure<TransferResult>(new ArgumentNullException(nameof(request)));

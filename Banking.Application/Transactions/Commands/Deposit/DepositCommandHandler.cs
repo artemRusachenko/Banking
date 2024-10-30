@@ -17,7 +17,7 @@ namespace Banking.Application.Transactions.Commands.Deposit
             if(request == null) 
                 return ResultBuilder.Failure<DepositResult>(new ArgumentNullException(nameof(request)));
 
-            if (request.Amount < 0)
+            if (request.Amount <= 0)
                 return ResultBuilder.Failure<DepositResult>(new ArgumentException("Amount must be greater than zero."));
 
             if (string.IsNullOrWhiteSpace(request.AccountNumber))
