@@ -1,6 +1,7 @@
 ﻿using System;
 using Banking.Domain.Accounts;
 using Banking.Domain.Data;
+using Banking.Domain.Transactions;
 using Banking.Infrastructure.Data;
 using Banking.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,23 @@ namespace Banking.IntegrationTests
     {
         internal readonly IApplicationDbContext _context;
         internal readonly IAccountRepository _accountRepository;
+        internal readonly ITransactionRepository _transactionRepository;
         internal readonly IUnitOfWork _unitOfWork;
         private bool _disposed;
 
         public IntegrationTestBase()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
+                .UseSqlite("DataSource=:memory:")
+                .Options;
 
             var applicationDbContext = new ApplicationDbContext(options);
+            applicationDbContext.Database.OpenConnection();
+            applicationDbContext.Database.EnsureCreated();
+
             _context = applicationDbContext;
             _accountRepository = new AccountRepository(applicationDbContext);
+            _transactionRepository = new TransactionRepository(applicationDbContext);
             _unitOfWork = new UnitOfWork(applicationDbContext);
         }
 
@@ -37,7 +44,7 @@ namespace Banking.IntegrationTests
             {
                 if (disposing)
                 {
-                    ((ApplicationDbContext)_context)?.Database.EnsureDeleted();
+                    ((ApplicationDbContext)_context)?.Database.CloseConnection();
                     ((ApplicationDbContext)_context!)?.Dispose();
                 }
 

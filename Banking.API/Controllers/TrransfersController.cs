@@ -1,5 +1,4 @@
-﻿using Banking.Application.Transactions.Commands.Deposit;
-using Banking.Application.Transfers.Command;
+﻿using Banking.Application.Transfers.Command;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

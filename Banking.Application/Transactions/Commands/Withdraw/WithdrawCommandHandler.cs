@@ -12,7 +12,7 @@ namespace Banking.Application.Transactions.Commands.Withdraw
     public class WithdrawCommandHandler(IAccountRepository accountRepository,
         ITransactionRepository transactionRepository, IUnitOfWork unitOfWork) : IRequestHandler<WithdrawCommand, Result<WithdrawResult>>
     {
-        public async Task<Result<WithdrawResult>> Handle(WithdrawCommand request, CancellationToken cancellationToken)
+        public async Task<Result<WithdrawResult>> Handle(WithdrawCommand? request, CancellationToken cancellationToken)
         {
             if (request == null)
                 return ResultBuilder.Failure<WithdrawResult>(new ArgumentNullException(nameof(request)));

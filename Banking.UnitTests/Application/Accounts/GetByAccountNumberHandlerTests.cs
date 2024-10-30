@@ -3,7 +3,7 @@ using Banking.API.Accounts.Queries.GetByAccountNumber;
 using Banking.Domain.Accounts;
 using Moq;
 
-namespace Banking.Tests.Application
+namespace Banking.UnitTests.Application.Accounts
 {
     public class GetByAccountNumberHandlerTests
     {
@@ -19,11 +19,8 @@ namespace Banking.Tests.Application
         [Fact]
         public async Task Should_Return_Failure_When_Request_Is_Null()
         {
-            // Arrange
-            GetByAccountNumberQuery? request = null;
-
             // Act
-            var result = await _handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            var result = await _handler.Handle(null, CancellationToken.None).ConfigureAwait(false);
 
             // Assert
             Assert.False(result.IsSuccess);
@@ -34,7 +31,7 @@ namespace Banking.Tests.Application
         public async Task Should_Return_Failure_When_AccountNumber_Is_Null_Or_Empty()
         {
             // Arrange
-            var request = new GetByAccountNumberQuery(String.Empty);
+            var request = new GetByAccountNumberQuery(string.Empty);
 
             // Act
             var result = await _handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
