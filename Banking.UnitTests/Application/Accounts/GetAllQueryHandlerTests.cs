@@ -4,7 +4,7 @@ using Banking.Application.Accounts.Queries.GetAll;
 using Banking.Domain.Accounts;
 using Moq;
 
-namespace Banking.Tests.Application
+namespace Banking.UnitTests.Application.Accounts
 {
     public class GetAllQueryHandlerTests
     {
@@ -20,11 +20,8 @@ namespace Banking.Tests.Application
         [Fact]
         public async Task Should_Return_Failure_When_Request_Is_Null()
         {
-            // Arrange
-            GetAllQuery? request = null;
-
             // Act
-            var result = await _handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            var result = await _handler.Handle(null, CancellationToken.None).ConfigureAwait(false);
 
             // Assert
             Assert.False(result.IsSuccess);
