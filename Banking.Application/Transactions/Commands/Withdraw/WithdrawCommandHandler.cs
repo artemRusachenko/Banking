@@ -32,7 +32,6 @@ namespace Banking.Application.Transactions.Commands.Withdraw
                 return ResultBuilder.Failure<WithdrawResult>(new ArgumentException("Insufficient funds in the account"));
 
             var transaction = new Transaction(account.Id, TransactionType.Withdrawal, -request.Amount, null);
-            using var trans = unitOfWork.BeginTransaction();
 
             try
             {
@@ -41,22 +40,17 @@ namespace Banking.Application.Transactions.Commands.Withdraw
                 await transactionRepository.AddAsync(transaction).ConfigureAwait(false);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-                trans.Commit();
             }
             catch (ArgumentNullException ex)
             {
-                trans.Rollback();
                 return ResultBuilder.Failure<WithdrawResult>(ex);
             }
             catch (DbUpdateException dbEx)
             {
-                trans.Rollback();
                 return ResultBuilder.Failure<WithdrawResult>(new ArgumentException("An error occurred while withdrawing", dbEx));
             }
             catch (Exception ex)
             {
-                trans.Rollback();
                 return ResultBuilder.Failure<WithdrawResult>(new ArgumentException("An unexpected error occurred during the withdraw operation", ex));
             }
 
