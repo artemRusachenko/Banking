@@ -1,14 +1,11 @@
 ﻿#pragma warning disable CA1031
 using Banking.Application.Core;
-using Banking.Application.Transactions.Commands.Deposit;
-using Banking.Application.Transactions.Commands.Withdraw;
 using Banking.Domain.Accounts;
 using Banking.Domain.Data;
 using Banking.Domain.Transactions;
 using Banking.Domain.Transfers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Principal;
 
 namespace Banking.Application.Transfers.Command
 {
@@ -45,8 +42,7 @@ namespace Banking.Application.Transfers.Command
             var transfer = new Transfer(accountFrom.Id, accountTo.Id, request.Amount);
             var sendTransaction = new Transaction(accountFrom.Id, TransactionType.Transfer, -request.Amount, request.description);
             var recieveTransaction = new Transaction(accountFrom.Id, TransactionType.Transfer, request.Amount, request.description);
-
-            using var trans = unitOfWork.BeginTransaction();
+            
             try
             {
                 await accountRepository.Transfer(accountFrom, accountTo, request.Amount).ConfigureAwait(false);
@@ -58,22 +54,17 @@ namespace Banking.Application.Transfers.Command
                 await transferRepository.AddAsync(transfer).ConfigureAwait(false);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-                trans.Commit();
             }
             catch (ArgumentNullException ex)
             {
-                trans.Rollback();
                 return ResultBuilder.Failure<TransferResult>(ex);
             }
             catch (DbUpdateException dbEx)
             {
-                trans.Rollback();
                 return ResultBuilder.Failure<TransferResult>(new ArgumentException("An error occurred while transfering", dbEx));
             }
             catch (Exception ex)
             {
-                trans.Rollback();
                 return ResultBuilder.Failure<TransferResult>(new ArgumentException("An unexpected error occurred during the transfer operation", ex));
             }
 
