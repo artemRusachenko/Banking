@@ -158,10 +158,6 @@ namespace Banking.UnitTests.Application.Transfers
                 .Setup(repo => repo.AddAsync(It.IsAny<Transaction>()))
                 .Returns(Task.CompletedTask);
 
-            _unitOfWorkMock
-                .Setup(uow => uow.BeginTransaction())
-                .Returns(new Mock<IDbTransaction>().Object);
-
             // Act
             var result = await _handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
@@ -187,10 +183,6 @@ namespace Banking.UnitTests.Application.Transfers
             _accountRepositoryMock
                 .Setup(repo => repo.Transfer(accountFrom, accountTo, request.Amount))
                 .Returns(Task.CompletedTask);
-
-            _unitOfWorkMock
-                .Setup(uow => uow.BeginTransaction())
-                .Returns(new Mock<IDbTransaction>().Object);
 
             _unitOfWorkMock
                 .Setup(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()))
@@ -226,10 +218,6 @@ namespace Banking.UnitTests.Application.Transfers
             _transactionRepositoryMock
                 .Setup(repo => repo.AddAsync(It.IsAny<Transaction>()))
                 .ThrowsAsync(new InvalidOperationException("Some unexpected operation error"));
-
-            _unitOfWorkMock
-                .Setup(uow => uow.BeginTransaction())
-                .Returns(new Mock<IDbTransaction>().Object);
 
             // Act
             var result = await _handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
